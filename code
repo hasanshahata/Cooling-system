@@ -1,0 +1,189 @@
+#include <LiquidCrystal.h> // includes the LiquidCrystal Library
+#include <DHT.h>;
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+#define DHTPIN 8     // what pin we're connected to
+#define DHTTYPE DHT11   // DHT 11  (AM2302)
+DHT dht(DHTPIN, DHTTYPE);
+int passFlag = 0;
+#define MOTOR 9
+#define BUZZ 7
+float temp = 0;
+char c = '223';
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(MOTOR, OUTPUT);
+  pinMode(BUZZ, OUTPUT);
+  lcd.begin(16,2);
+  dht.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly;
+  delay(300);
+  float temp = dht.readTemperature();
+  // Check if any reads failed and exit early (to try again)
+  if (isnan(temp)) 
+  {
+    lcd.clear();
+    lcd.setCursor(5, 0);
+    lcd.print("Error");
+    return;
+  }
+  /*Temperature[6] = ' ';
+  Temperature[7]   = (Temp / 100) % 10  + 48;
+  Temperature[8]   = (Temp / 10)  % 10  + 48;
+  Temperature[10]  =  Temp % 10 + 48;
+  Temperature[11]  = 223;        // Degree symbol ( °)*/
+  Serial.println(temp);
+  lcd.setCursor(0, 0);
+  lcd.print("Temperature: ");
+  lcd.setCursor(0, 1);
+  lcd.print(temp);
+  lcd.print("C");
+  
+  if (temp < 25)
+  {
+    analogWrite(MOTOR, 0);
+    passFlag = 0;
+  }
+  else if (temp >= 25 && temp <= 27)
+  {
+    analogWrite(MOTOR, 255 );
+    passFlag = 0;
+  }
+  else if (temp > 27 && temp < 30)
+  {
+    analogWrite(MOTOR, 255);
+    passFlag = 0;
+  }
+  else if (temp >= 32)
+  {
+    if (passFlag == 0) 
+    {
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+
+    tone(BUZZ, 70000); // Send 1KHz sound signal...
+    delay(300);        // ...for 1 sec
+    noTone(BUZZ);     // Stop sound...
+    delay(150);        // ...for 1sec
+    passFlag++;
+    }
+    analogWrite(MOTOR, 0);
+  }
+  
+}
